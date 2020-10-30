@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: ecodb
+  labels:
+    name: ecodb
+    app: enmeter  
+spec:
+  ports:
+  - 
+    port: 3306
+    name: mysql
+    targetPort: 3306
+  - 
+    port: 2701
+    name: mongo
+    targetPort: 2701  
+  selector:
+    name: ecodb
+    app: enmeter
+    

@@ -1,0 +1,15 @@
+apiVersion: "v1"
+kind: Pod
+metadata:
+  name: webapi
+  labels:
+    name: webapi
+    app: enmeter
+spec:
+  containers:
+    - name: python
+      image: devnawed/python-flask
+      ports:
+        - containerPort: 5000
+          name: http
+          protocol: TCP                    

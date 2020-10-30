@@ -1,0 +1,30 @@
+apiVersion: "v1"
+kind: Pod
+metadata:
+  name: ecodb
+  labels:
+    name: ecodb
+    app: enmeter
+spec:
+  containers:
+    - name: mysql
+      image: mysql:latest
+      ports:
+        - containerPort: 3306         
+          protocol: TCP
+      env: 
+        - 
+          name: "MYSQL_ROOT_PASSWORD"
+          value: "password"
+    - name: mongo
+      image: mongo:latest
+      ports:
+        - containerPort: 2701         
+          protocol: TCP
+      env:
+        - name: MONGO_INITDB_ROOT_USERNAME
+          value: "root"
+        - name: MONGO_INITDB_ROOT_PASSWORD
+          value: "example"    
+       
+    
