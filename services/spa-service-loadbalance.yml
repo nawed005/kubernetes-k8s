@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    name: angular
+    app: angular
+  name: angularlb
+spec:
+  type: LoadBalancer
+  ports:
+  - name: angular
+    port: 80
+    protocol: TCP
+  selector:
+    name: angular
+    app: angular

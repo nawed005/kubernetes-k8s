@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: angular
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: angular
+      app: angular
+  template:
+    metadata:
+      labels:
+        name: angular
+        app: angular
+    spec:
+      containers:
+        - name: angular
+          image: devnawed/ecometric-angular:v1
+          imagePullPolicy: Always
+          ports:
+          - containerPort: 80
+     
