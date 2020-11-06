@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ecomysql
+labels:
+    app: ecomysql  
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ecomysql
+  template:
+    metadata:
+      labels:
+        app: ecomysql
+    spec:
+      containers:
+        - name: mysql
+          image: mysql:latest
+          ports:
+            - containerPort: 3306         
+              protocol: TCP
+          env: 
+            - name: "MYSQL_ROOT_PASSWORD"
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-secret
+                  key: mysql-root-username
+     
