@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gitlab-angular
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: gitlab-angular
+      app: angular
+  template:
+    metadata:
+      labels:
+        name: gitlab-angular
+        app: angular
+    spec:
+      containers:
+        - name: gitlab-angular
+          image: registry.gitlab.com/ecebrahma/demo_docker:latest
+          imagePullPolicy: Always
+          ports:
+          - containerPort: 80
+      imagePullSecrets:
+        - name: gitlabtoken
+
+     
