@@ -1,0 +1,33 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: parallel-pods-processing-cronjob
+spec:
+  schedule: "*/7 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          volumes:
+            - name: jub-datamodels-pv-storage
+              persistentVolumeClaim:
+                claimName: datamodels-pv-claim
+          containers:
+          - name: parallel-cron-container
+            image: 172.16.1.225:83/parallelpods:2.2
+            imagePullPolicy: IfNotPresent
+            volumeMounts:
+              - mountPath: /app/data
+                name: jub-datamodels-pv-storage 
+            command: ['/bin/sh', '-c', 'python run_cron.py']
+    
+          restartPolicy: OnFailure
+          #terminationGracePeriodSeconds: 20
+          
+          imagePullSecrets:
+            - name: regcred 
+      
+      #completions: 3 # number of times to run
+      parallelism: 3 # number of retries before throwing error
+  
+  concurrencyPolicy: Allow  

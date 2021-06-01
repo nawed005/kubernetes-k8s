@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: webapi
+  labels:
+    name: webapi
+    app: enmeter
+spec:
+  selector:
+    name: webapi 
+    app: enmeter
+  type: NodePort
+  ports:
+   - port: 5000
+     name: http
+     targetPort: 5000
+     protocol: TCP

@@ -8,11 +8,9 @@ metadata:
 spec:
   containers:
     - name: python
-      image: devnawed/python-flask
+      image: devnawed/python-flask:v3.2
       ports:
         - containerPort: 5000
           name: http
-          protocol: TCP  
-      env:
-        - name: DB_HOST
-          value: ecodb                    
+          protocol: TCP
+                      

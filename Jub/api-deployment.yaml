@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: api
+      app: jubilant
+  template:
+    metadata:
+      labels:
+        name: api
+        app: jubilant
+    spec:
+      volumes:
+        - name: jub-datamodels-pv-storage
+          persistentVolumeClaim:
+            claimName: datamodels-pv-claim
+      containers:
+        - name: python
+          image: 10.5.6.34:83/jubapi:1.9
+          #image: 172.16.1.225:83/jubapi:2.5
+          imagePullPolicy: "IfNotPresent"
+          ports:
+            - containerPort: 5000         
+              name: http
+              protocol: TCP
+          volumeMounts:
+            - mountPath: /app/data
+              name: jub-datamodels-pv-storage
+      imagePullSecrets:
+        - name: regcred        
+          
+          
+               

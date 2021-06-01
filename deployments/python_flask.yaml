@@ -1,27 +1,26 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: ecodb
+  name: webapi
 spec:
   replicas: 1
   selector:
     matchLabels:
-      name: ecodb
+      name: webapi
       app: enmeter
   template:
     metadata:
       labels:
-        name: ecodb
+        name: webapi
         app: enmeter
     spec:
       containers:
-        - name: mysql
-          image: mysql:8.0.22
+        - name: python
+          image: devnawed/python-flask:v3.2
           ports:
-            - containerPort: 3306         
+            - containerPort: 5000         
+              name: http
               protocol: TCP
-          env: 
-            - name: "MYSQL_ROOT_PASSWORD"
-              value: "password"
           
-     
+          
+               

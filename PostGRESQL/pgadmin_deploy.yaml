@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pgadmin
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: pgadmin
+      app: pgadmin
+  template:
+    metadata:
+      labels:
+        name: pgadmin
+        app: pgadmin
+    spec:
+      initContainers:
+        - name: pgadmininitcon
+          image: busybox
+          command: ["/bin/chown", "-R", "5050:5050", "/var/lib/pgadmin"]
+          volumeMounts:
+            - mountPath: /var/lib/pgadmin
+              name: pgadminstorage 
+      containers:
+        - name: pgadmin4
+          image: dpage/pgadmin4:5.1
+          imagePullPolicy: "IfNotPresent"
+          ports:
+            - containerPort: 80
+          envFrom:
+            - configMapRef:
+                name: pgadmin-config  
+          volumeMounts:
+            - mountPath: /var/lib/pgadmin
+              name: pgadminstorage       
+      volumes:
+        - name: pgadminstorage
+          persistentVolumeClaim:
+            claimName: pgadmin-pv-claim 
+
+     

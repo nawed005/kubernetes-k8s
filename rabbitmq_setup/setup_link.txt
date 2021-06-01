@@ -1,0 +1,1 @@
+https://kubernetes.io/docs/tasks/job/coarse-parallel-processing-work-queue/

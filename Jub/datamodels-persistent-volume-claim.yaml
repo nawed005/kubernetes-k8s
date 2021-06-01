@@ -1,0 +1,29 @@
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: datamodels-pv-volume
+  labels:
+    type: local
+    app: jubilant
+spec:
+  storageClassName: manual
+  capacity:
+    storage: 30Gi
+  accessModes:
+    - ReadWriteMany
+  hostPath:
+    path: "/mnt/jubilantdatamodel"
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: datamodels-pv-claim
+  labels:
+    app: jubilant
+spec:
+  storageClassName: manual
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 30Gi

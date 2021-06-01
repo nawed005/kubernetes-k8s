@@ -1,0 +1,30 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: forecastingredientindent
+spec:
+  #schedule: "0 00-14 * * *"
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          volumes:
+            - name: jub-datamodels-pv-storage
+              persistentVolumeClaim:
+                claimName: datamodels-pv-claim
+          containers:
+            - name: conforecastingredientindent
+              image: 172.16.1.225:83/jubdatamodels:5.1
+              #image: 10.5.6.34:83/jubdatamodels:5.1
+              imagePullPolicy: IfNotPresent
+              volumeMounts:
+                - mountPath: /app/data
+                  name: jub-datamodels-pv-storage 
+              command:
+              - /bin/sh
+              - -c
+              - "python indent_cycle_main.py"
+          restartPolicy: OnFailure
+          imagePullSecrets:
+            - name: regcred

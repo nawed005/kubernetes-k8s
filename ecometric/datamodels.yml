@@ -1,27 +1,26 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: ecodb
+  name: datamodelsapi
 spec:
   replicas: 1
   selector:
     matchLabels:
-      name: ecodb
+      name: datamodelsapi
       app: enmeter
   template:
     metadata:
       labels:
-        name: ecodb
+        name: datamodelsapi
         app: enmeter
     spec:
       containers:
-        - name: mysql
-          image: mysql:8.0.22
+        - name: datamodels
+          image: devnawed/ecometric-model:v1.2
           ports:
-            - containerPort: 3306         
+            - containerPort: 5001         
+              name: http
               protocol: TCP
-          env: 
-            - name: "MYSQL_ROOT_PASSWORD"
-              value: "password"
           
-     
+          
+               

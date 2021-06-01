@@ -2,9 +2,9 @@ apiVersion: v1
 kind: Service
 metadata:
   labels:
-    name: angular
-    app: angular
-  name: angularlb
+    name: frontend
+    app: enmeter
+  name: frontend-lb
 spec:
   type: LoadBalancer
   ports:
@@ -12,5 +12,5 @@ spec:
     port: 80
     protocol: TCP
   selector:
-    name: angular
-    app: angular
+    name: frontend
+    app: enmeter

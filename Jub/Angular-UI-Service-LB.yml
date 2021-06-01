@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    name: webui-lb
+    app: jubwebui
+  name: webui-lb
+spec:
+  type: LoadBalancer
+  ports:
+  - name: http
+    port: 80
+    protocol: TCP
+  selector:
+    name: webui
+    app: jubwebui

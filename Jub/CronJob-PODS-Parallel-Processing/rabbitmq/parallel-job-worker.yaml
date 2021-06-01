@@ -1,0 +1,47 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: job-wq-1
+spec:
+  parallelism: 2
+  template:
+    metadata:
+      name: job-wq-1
+    spec:
+      containers:
+      - name: paralleljob
+        image: 172.16.1.225:83/cronparallelpods:3.7
+        command: ['/bin/sh', '-c', 'python app.py']
+      restartPolicy: OnFailure
+      imagePullSecrets:
+        - name: regcred 
+---
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: parallel-pods-processing-cronjob
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: parallel-cronjob-container
+            image: 172.16.1.225:83/cronparallelpods:3.7
+            imagePullPolicy: IfNotPresent
+            command:
+              - /bin/sh
+              - -c
+              - "python receive.py"
+    
+          restartPolicy: OnFailure
+          terminationGracePeriodSeconds: 20
+          
+          imagePullSecrets:
+            - name: regcred 
+      
+      #completions: 3 # number of times to run
+      parallelism: 3 # number of retries before throwing error
+  
+  concurrencyPolicy: Allow          
