@@ -16,8 +16,8 @@ spec:
     spec:
       containers:
         - name: angular
-          image: ecometric.eastus.cloudapp.azure.com:83/ecometric-angular:1.0.3237
-          imagePullPolicy: Always
+          image: ecometric.eastus.cloudapp.azure.com:83/ecometric-angular:1.13
+          imagePullPolicy: IfNotPresent
           ports:
           - containerPort: 80
       imagePullSecrets:

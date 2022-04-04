@@ -1,0 +1,58 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: resenseapi
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: resenseapi
+      app: resensepoc
+  template:
+    metadata:
+      labels:
+        name: resenseapi
+        app: resensepoc
+    spec:
+      volumes:
+        - name: api-datamodels-pv-storage
+          persistentVolumeClaim:
+            claimName: api-datamodels-pvc
+      containers:
+        - name: pythonflask
+          image: resenseacr.azurecr.io/resenseapi:3.1
+          imagePullPolicy: "IfNotPresent"
+          env:
+            - name: DB_HOST
+              value: resensepoc.postgres.database.azure.com
+            - name: DB_USER
+              value: resense_db_admin
+            - name: DB_PASS
+              value: Nihilent4u
+            - name: DB_PORT
+              value: "5432"
+            - name: DB_NAME
+              value: db_resense_poc
+            - name: JWT_SECRET_KEY
+              value: xyz
+            - name: BASE_URL
+              value: https://www.resense.tech
+            - name: PASSWORD_SALT
+              value: p0c
+            - name: BASE_FILEPATH
+              value: "/app/data/"
+            - name: MAIL_USERNAME
+              value: resense@nihilent.com
+            - name: MAIL_PASSWORD
+              value: Dec@2021$
+          ports:
+            - containerPort: 5000        
+              name: http
+              protocol: TCP
+          volumeMounts:
+            - mountPath: "/app/data"
+              name: api-datamodels-pv-storage
+            
+          
+          
+               

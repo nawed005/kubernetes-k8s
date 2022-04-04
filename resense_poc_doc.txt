@@ -1,0 +1,113 @@
+git clone https://nawed.alam:eJaq5jBzzco9hHnCCGw3@gitlab.nihilent.com/resense-poc/angular-ui.git
+git clone https://nawed.alam:eJaq5jBzzco9hHnCCGw3@gitlab.nihilent.com/resense-poc/api.git
+
+git clone https://<username>:<access token>@gitlab.nihilent.com/resense-poc/api.git
+
+CESC application no : Your Application NO :28721221
+
+172.16.1.118:5000/api/v1/registration
+
+{
+"first_name": "nawed",
+"last_name": "alam",
+"email": "nawed.alam@nihilent.com"
+}
+
+Mail Credentials
+username : "resense@nihilent.com"
+password : "Dec@2021$"
+
+helm uninstall cert-manager -n resense
+
+AKS cluster created
+File storage created
+
+az login --tenant c0f60114-0a61-411a-aa22-334408b47002
+
+az aks get-credentials --resource-group Resense-PoC --name resense-AKS
+
+az acr login --name resenseacr --expose-token
+
+Azure CLI build for resense angular
+az acr build -t resenseacr.azurecr.io/resenseui:3.1 --registry resenseacr --build-arg configuration=production --verbose --timeout 500 --file Dockerfile .
+
+Azure CLI build for resense python flask api
+# old build style
+az acr build -t resenseacr.azurecr.io/resenseapi:2.3 --registry resenseacr --build-arg MAIL_USERNAME_ARG="resense@nihilent.com" --build-arg MAIL_PASSWORD_ARG="Dec@2021$" --build-arg BASE_URL_ARG="https://www.resense.tech/backend/" --build-arg BASE_FILEPATH_ARG="/app/data/csv/" --verbose --timeout 500 --file Dockerfile .
+# new and updated (used this for deployment)
+az acr build -t resenseacr.azurecr.io/resenseapi:3.0 --registry resenseacr --verbose --timeout 500 --file Dockerfile .
+  
+To see the list of images 
+az acr list -g Resense-PoC -o table
+
+az acr show-endpoints -g Resense-PoC
+
+Configure ACR integration for existing AKS clusters
+az aks update -n resense-AKS -g Resense-PoC --attach-acr resenseacr
+
+To create a namespace in kubernetes
+kubectl create namespace resense
+
+Create static IP in azure for AKS
+az network public-ip create --resource-group Resense-PoC --name resenseAKSPublicIP --sku Standard --allocation-method static
+
+To see the IP address in the regional group
+az network public-ip show --resource-group Resense-PoC --name resenseAKSPublicIP --query ipAddress --output tsv
+
+az role assignment create --assignee da0aee18-4a71-4326-b212-14d7777cdf23 --role "Network Contributor" --scope /subscriptions/e3aa6472-19b9-4d48-b63a-baf9afbb9972/resourceGroups/Resense-PoC
+    
+
+kubectl patch svc azure-load-balancer --namespace=resense -p '{"spec": {"type": "LoadBalancer", "externalIPs":["20.198.75.177"]}}'
+
+
+C:\Users\nawed.alam\.azure-kubectl
+C:\Users\nawed.alam\.azure-kubelogin
+
+kubectl exec --stdin --tty resenseapi-6dc775495c-pwmmm --namespace resense -- /bin/bash 
+kubectl describe pod resenseapi-65fd776c94-7nl85 --namespace resense
+
+RUN npm run ng build -- --output-path=./dist/out --configuration=$configuration --verbose updated
+
+sudo cp resense_node_1.crt /etc/docker/certs.d/172.16.1.118:83/ca.crt 
+sudo cp resense_node_1.crt /usr/local/share/ca-certificates/172.16.1.118.crt
+sudo update-ca-certificates
+
+docker run -d \
+  -p 83:83 \
+  --restart=always \
+  --name registry-docker \
+  -v "$(pwd)"/auth:/auth \
+  -e "REGISTRY_AUTH=htpasswd" \
+  -e "REGISTRY_AUTH_HTPASSWD_REALM=Registry Realm" \
+  -e REGISTRY_AUTH_HTPASSWD_PATH=/auth/htpasswd \
+  -v "$(pwd)"/certs:/certs \
+  -v /mnt/registry:/var/lib/registry \
+  -e REGISTRY_HTTP_ADDR=0.0.0.0:83 \
+  -e REGISTRY_STORAGE_DELETE_ENABLED=true \
+  -e REGISTRY_HTTP_TLS_CERTIFICATE=/certs/domain.crt \
+  -e REGISTRY_HTTP_TLS_KEY=/certs/domain.key \
+  registry:2
+
+htpasswd -Bbn docker_admin docker@2022 > auth/htpasswd
+
+microk8s kubectl create secret docker-registry regcred --docker-server=https://172.16.1.118:83 --docker-username=docker_admin --docker-password=docker@2022 --docker-email=nawed.alam@nihilent.com --namespace resensepoc
+
+Resense POC Development server
+docker CLI build for resense angular
+az acr build -t resenseacr.azurecr.io/resenseui:2.8 --registry resenseacr --build-arg configuration=production --verbose --timeout 500 --file Dockerfile .
+
+docker build --build-arg configuration=staging -t 172.16.1.118:83/resenseui:1.0 .
+docker push 172.16.1.118:83/rspocui:1.0
+
+microk8s kubectl patch svc resenseui-lb --namespace=resensepoc -p '{"spec": {"type": "LoadBalancer", "externalIPs":["172.16.1.118"]}}'
+
+# Api docker build
+docker build -t 172.16.1.118:83/resenseapi:2.2 . 
+docker push 172.16.1.118:83/resenseapi:2.2
+
+Patched load balancer service
+microk8s kubectl patch svc api-lb --namespace=resensepoc -p '{"spec": {"type": "LoadBalancer", "externalIPs":["172.16.1.118"]}}'
+
+cat /home/azureuser/certs/domain.crt | openssl x509 -noout -enddate
+
+

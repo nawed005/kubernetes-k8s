@@ -16,8 +16,9 @@ spec:
     spec:
       containers:
         - name: angularui
-          #image: 172.16.1.225:83/jubui:1.1
-          image: 10.5.6.34:83/jubui:1.0
+          #image: 10.5.4.55:32000/jubui:2.1
+          #image: 172.16.1.225:83/jubui:1.0.8141
+          image: 10.5.4.79:83/jubui:5.0
           imagePullPolicy: "IfNotPresent"
           ports:
             - containerPort: 80         

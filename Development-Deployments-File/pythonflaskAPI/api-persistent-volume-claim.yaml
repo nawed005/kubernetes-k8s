@@ -1,0 +1,29 @@
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: resensepoc-pv-claim
+  labels:
+    type: local
+    app: resensepoc
+spec:
+  storageClassName: manual
+  capacity:
+    storage: 49Gi
+  accessModes:
+    - ReadWriteMany
+  hostPath:
+    path: "/mnt/sgpoc"
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: resensepoc-pv-claim
+  labels:
+    app: resensepoc
+spec:
+  storageClassName: manual
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 49Gi

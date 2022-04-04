@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: api
+      app: resensedemo
+  template:
+    metadata:
+      labels:
+        name: api
+        app: resensedemo
+    spec:
+      volumes:
+        - name: resensedemo-pv-storage
+          persistentVolumeClaim:
+            claimName: resensedemo-pv-claim
+      containers:
+        - name: python
+          image: 40.80.94.143:83/demoapi:1.2
+          imagePullPolicy: "IfNotPresent"
+          env:
+            - name: DB_HOST
+              value: "postgresthirteen"
+            - name: DB_USER
+              value: "postgresadmin"
+            - name: DB_PASS
+              value: "Host@123456"
+            - name: DB_NAME
+              value: "resense_demo_db"
+            - name: JWT_SECRET_KEY
+              value: "jubilant_dev"
+            - name: BASE_URL
+              value: "https://40.80.94.143"  
+            - name: PASSWORD_SALT
+              value: "jbl"  
+            - name: FILE_UPLOAD_PATH
+              value: "/data/jubilantdatamodel/input/indent_cycle_data/"  
+          ports:
+            - containerPort: 5000         
+              name: http
+              protocol: TCP
+          volumeMounts:
+            - mountPath: /app/data
+              name: resensedemo-pv-storage
+      imagePullSecrets:
+        - name: regcred        
+          
+          
+               

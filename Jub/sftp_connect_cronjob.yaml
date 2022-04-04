@@ -1,0 +1,51 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: sftp-cron
+spec:
+  #schedule: "*/59 0-13 * * *"
+  schedule: "*/20 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          volumes:
+            - name: jub-datamodels-pv-storage
+              persistentVolumeClaim:
+                claimName: datamodels-pv-claim
+          containers:
+            - name: con-sftp-cron
+              image: localhost:32000/jubsftp:1.1
+              #image: 10.5.6.34:83/jubsftp:1.1
+              imagePullPolicy: IfNotPresent
+              volumeMounts:
+                - mountPath: /app/data
+                  name: jub-datamodels-pv-storage 
+              command:
+              - /bin/sh
+              - -c
+              - "python pysftp_connect.py"
+          restartPolicy: OnFailure
+          # imagePullSecrets:
+          #   - name: regcred
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: sftp-connection-pod
+spec:
+  volumes:
+    - name: jub-datamodels-pv-storage
+      persistentVolumeClaim:
+        claimName: datamodels-pv-claim
+  containers:
+    - name: con-sftp-cron
+      image: localhost:32000/jubsftp:1.1
+      #image: 10.5.6.34:83/jubsftp:1.1
+      imagePullPolicy: IfNotPresent
+      volumeMounts:
+        - mountPath: /app/data
+          name: jub-datamodels-pv-storage 
+  
+  restartPolicy: OnFailure
+    # The pod template ends here

@@ -1,0 +1,29 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: push-indent-files-to-message-queue
+spec:
+  #schedule: "0 00-14 * * *"
+  schedule: "*/5 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          volumes:
+            - name: jub-datamodels-pv-storage
+              persistentVolumeClaim:
+                claimName: datamodels-pv-claim
+          containers:
+            - name: con-push-indent-files-to-message-queue
+              image: 10.5.6.34:83/jubdatamodels:13.7
+              imagePullPolicy: IfNotPresent
+              volumeMounts:
+                - mountPath: /app/data
+                  name: jub-datamodels-pv-storage
+              command:
+                - /bin/sh
+                - -c
+                - "python push_indent_files_to_queue.py"
+          restartPolicy: OnFailure
+          imagePullSecrets:
+            - name: regcred

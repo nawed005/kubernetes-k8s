@@ -20,7 +20,8 @@ spec:
             claimName: datamodels-pv-claim
       containers:
         - name: datamodels
-          image: 172.16.1.225:83/jubdatamodels:1.0
+          #image: 172.16.1.225:83/jubdatamodels:1.0
+          image: 10.5.6.34:83/jubdatamodels:12.5
           imagePullPolicy: "IfNotPresent"
           ports:
             - containerPort: 5001         

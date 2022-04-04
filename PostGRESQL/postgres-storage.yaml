@@ -1,23 +1,23 @@
 kind: PersistentVolume
 apiVersion: v1
 metadata:
-  name: postgres-pv-volume
+  name: postgresthirteen-pv-volume
   labels:
     type: local
     app: postgres
 spec:
   storageClassName: manual
   capacity:
-    storage: 49Gi
+    storage: 150Gi
   accessModes:
     - ReadWriteMany
   hostPath:
-    path: "/mnt/jubilantdb"
+    path: "/data/jub_db"
 ---
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
-  name: postgres-pv-claim
+  name: postgresthirteen-pv-claim
   labels:
     app: postgres
 spec:
@@ -26,4 +26,4 @@ spec:
     - ReadWriteMany
   resources:
     requests:
-      storage: 49Gi
+      storage: 150Gi

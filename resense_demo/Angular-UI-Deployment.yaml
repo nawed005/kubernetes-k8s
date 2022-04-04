@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: demoui
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: demoui
+      app: demoui
+  template:
+    metadata:
+      labels:
+        name: demoui
+        app: demoui
+    spec:
+      containers:
+        - name: angularui
+          image: 40.80.94.143:83/demoui:1.1
+          imagePullPolicy: "IfNotPresent"
+          ports:
+            - containerPort: 80         
+              name: http
+              protocol: TCP
+      imagePullSecrets:
+        - name: regcred        
+          
+          
+               

@@ -8,6 +8,11 @@ spec:
   type: LoadBalancer
   ports:
   - port: 5672
+    protocol: TCP
+    name: msgqueue
+  - port: 15672
+    protocol: TCP
+    name: management  
   selector:
     app: taskQueue
     component: rabbitmq

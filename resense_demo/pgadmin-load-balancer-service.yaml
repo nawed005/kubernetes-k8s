@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    name: pgadmin-lb
+    app: pgadmin
+  name: pgadmin-lb
+spec:
+  type: LoadBalancer
+  ports:
+  - name: http
+    port: 5002
+    protocol: TCP
+  selector:
+    name: pgadmin 
+    app: pgadmin

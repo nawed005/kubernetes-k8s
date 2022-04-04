@@ -1,0 +1,154 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: frontend
+  namespace: eco-metric
+  selfLink: /apis/apps/v1/namespaces/eco-metric/deployments/frontend
+  uid: cb35425a-2845-4cdd-947e-130c5974e8db
+  resourceVersion: '88386695'
+  generation: 5
+  creationTimestamp: '2020-11-16T13:56:33Z'
+  annotations:
+    deployment.kubernetes.io/revision: '5'
+  managedFields:
+    - manager: dashboard
+      operation: Update
+      apiVersion: apps/v1
+      time: '2021-01-09T12:59:19Z'
+      fieldsType: FieldsV1
+      fieldsV1:
+        'f:spec':
+          'f:progressDeadlineSeconds': {}
+          'f:replicas': {}
+          'f:revisionHistoryLimit': {}
+          'f:selector':
+            'f:matchLabels':
+              .: {}
+              'f:app': {}
+              'f:name': {}
+          'f:strategy':
+            'f:rollingUpdate':
+              .: {}
+              'f:maxSurge': {}
+              'f:maxUnavailable': {}
+            'f:type': {}
+          'f:template':
+            'f:metadata':
+              'f:labels':
+                .: {}
+                'f:app': {}
+                'f:name': {}
+            'f:spec':
+              'f:containers':
+                'k:{"name":"angular"}':
+                  .: {}
+                  'f:image': {}
+                  'f:imagePullPolicy': {}
+                  'f:name': {}
+                  'f:ports':
+                    .: {}
+                    'k:{"containerPort":80,"protocol":"TCP"}':
+                      .: {}
+                      'f:containerPort': {}
+                      'f:protocol': {}
+                  'f:resources': {}
+                  'f:terminationMessagePath': {}
+                  'f:terminationMessagePolicy': {}
+              'f:dnsPolicy': {}
+              'f:imagePullSecrets':
+                .: {}
+                'k:{"name":"registrycred"}':
+                  .: {}
+                  'f:name': {}
+              'f:restartPolicy': {}
+              'f:schedulerName': {}
+              'f:securityContext': {}
+              'f:terminationGracePeriodSeconds': {}
+    - manager: kube-controller-manager
+      operation: Update
+      apiVersion: apps/v1
+      time: '2022-03-07T13:17:56Z'
+      fieldsType: FieldsV1
+      fieldsV1:
+        'f:metadata':
+          'f:annotations':
+            .: {}
+            'f:deployment.kubernetes.io/revision': {}
+        'f:status':
+          'f:conditions':
+            .: {}
+            'k:{"type":"Available"}':
+              .: {}
+              'f:lastTransitionTime': {}
+              'f:lastUpdateTime': {}
+              'f:message': {}
+              'f:reason': {}
+              'f:status': {}
+              'f:type': {}
+            'k:{"type":"Progressing"}':
+              .: {}
+              'f:lastTransitionTime': {}
+              'f:lastUpdateTime': {}
+              'f:message': {}
+              'f:reason': {}
+              'f:status': {}
+              'f:type': {}
+          'f:observedGeneration': {}
+          'f:replicas': {}
+          'f:unavailableReplicas': {}
+          'f:updatedReplicas': {}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: enmeter
+      name: frontend
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: enmeter
+        name: frontend
+    spec:
+      containers:
+        - name: angular
+          image: 'ecometric.eastus.cloudapp.azure.com:83/ecometric-angular:1.13'
+          ports:
+            - containerPort: 80
+              protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          imagePullPolicy: Always
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 30
+      dnsPolicy: ClusterFirst
+      securityContext: {}
+      imagePullSecrets:
+        - name: registrycred
+      schedulerName: default-scheduler
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 25%
+      maxSurge: 25%
+  revisionHistoryLimit: 10
+  progressDeadlineSeconds: 600
+status:
+  observedGeneration: 5
+  replicas: 2
+  updatedReplicas: 1
+  unavailableReplicas: 2
+  conditions:
+    - type: Available
+      status: 'False'
+      lastUpdateTime: '2022-03-03T04:38:56Z'
+      lastTransitionTime: '2022-03-03T04:38:56Z'
+      reason: MinimumReplicasUnavailable
+      message: Deployment does not have minimum availability.
+    - type: Progressing
+      status: 'False'
+      lastUpdateTime: '2022-03-07T13:27:57Z'
+      lastTransitionTime: '2022-03-07T13:27:57Z'
+      reason: ProgressDeadlineExceeded
+      message: ReplicaSet "frontend-56d6455f5d" has timed out progressing.

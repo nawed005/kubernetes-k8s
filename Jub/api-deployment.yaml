@@ -20,8 +20,9 @@ spec:
             claimName: datamodels-pv-claim
       containers:
         - name: python
-          image: 10.5.6.34:83/jubapi:1.9
-          #image: 172.16.1.225:83/jubapi:2.5
+          #image: 10.5.4.55:32000/jubapi:2.1
+          image: 10.5.4.79:83/jubapi:6.0
+          #image: 172.16.1.225:83/jubapi:1.0.1803
           imagePullPolicy: "IfNotPresent"
           ports:
             - containerPort: 5000         

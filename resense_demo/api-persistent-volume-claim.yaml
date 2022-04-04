@@ -1,0 +1,29 @@
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: resensedemo-pv-claim
+  labels:
+    type: local
+    app: resensedemo
+spec:
+  storageClassName: manual
+  capacity:
+    storage: 20Gi
+  accessModes:
+    - ReadWriteMany
+  hostPath:
+    path: "/datadrive/sgresensedemo"
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: resensedemo-pv-claim
+  labels:
+    app: resensedemo
+spec:
+  storageClassName: manual
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 20Gi

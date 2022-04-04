@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: resenseapi
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: resenseapi
+      app: resensepoc
+  template:
+    metadata:
+      labels:
+        name: resenseapi
+        app: resensepoc
+    spec:
+      volumes:
+        - name: api-datamodels-pv-storage
+          persistentVolumeClaim:
+            claimName: api-datamodels-pvc
+      containers:
+        - name: pythonflask
+          image: resenseacr.azurecr.io/resenseapi:2.3
+          imagePullPolicy: "IfNotPresent"
+          ports:
+            - containerPort: 5000        
+              name: http
+              protocol: TCP
+          volumeMounts:
+            - mountPath: "/app/data"
+              name: api-datamodels-pv-storage
+            
+          
+          
+               

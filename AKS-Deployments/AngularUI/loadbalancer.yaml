@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    service.beta.kubernetes.io/azure-load-balancer-resource-group: Resense-PoC
+  name: azure-load-balancer
+  labels:
+    name: azure-load-balancer
+    app: resensepoc
+spec:
+  loadBalancerIP: 20.198.75.177
+  type: LoadBalancer
+  ports:
+  - port: 80
+    name: http
+    protocol: TCP
+  selector:
+    name: resenseui
+    app: resensepoc

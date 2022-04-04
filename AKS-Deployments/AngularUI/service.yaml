@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: resense-ui-service
+  labels:
+    name: resenseui
+    app: resensepoc
+spec:
+  type: ClusterIP
+  selector:
+    name: resenseui
+    app: resensepoc
+  ports:
+   - port: 80
+     name: http
+     protocol: TCP

@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: resenseui
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: resenseui
+      app: resensepoc
+  template:
+    metadata:
+      labels:
+        name: resenseui
+        app: resensepoc
+    spec:
+      containers:
+        - name: angularui
+          image: 172.16.1.118:83/rspocui:1.0
+          #image: URL_REGISTRY/resenseapi:VERSION
+          imagePullPolicy: "IfNotPresent"
+          ports:
+            - containerPort: 80         
+              name: http
+              protocol: TCP
+      imagePullSecrets:
+        - name: regcred       
+          
+          
+               

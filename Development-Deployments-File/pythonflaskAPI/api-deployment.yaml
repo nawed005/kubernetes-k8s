@@ -1,0 +1,62 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: api
+      app: resensepoc
+  template:
+    metadata:
+      labels:
+        name: api
+        app: resensepoc
+    spec:
+      volumes:
+        - name: resensepoc-pv-storage
+          persistentVolumeClaim:
+            claimName: resensepoc-pv-claim
+      containers:
+        - name: python
+          image: 172.16.1.118:83/pocapi:2.2
+          imagePullPolicy: "IfNotPresent"
+          env:
+            - name: DB_HOST
+              value: 172.16.1.119
+            - name: DB_USER
+              value: postgresadmin
+            - name: DB_PASS
+              value: Host$123456
+            - name: DB_PORT
+              value: 5432
+            - name: DB_NAME
+              value: db_resense_poc
+            - name: JWT_SECRET_KEY
+              value: xyz
+            - name: BASE_URL
+              value: https://172.16.1.118
+            - name: PASSWORD_SALT
+              value: p0c
+            - name: BASE_FILEPATH
+              value: /app/data/
+            - name: MAIL_USERNAME
+              value: resense@nihilent.com
+            - name: MAIL_PASSWORD
+              value: Dec@2021$
+          # envFrom:
+          # - secretRef:
+          #     name: api-env-secret  
+          ports:
+            - containerPort: 5000         
+              name: http
+              protocol: TCP
+          volumeMounts:
+            - mountPath: /app/data
+              name: resensepoc-pv-storage
+      imagePullSecrets:
+        - name: regcred        
+          
+          
+               

@@ -1,0 +1,40 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: parallel-incemental-data-forecast-ingredient-indent
+spec:
+  #schedule: "0 00-14 * * *"
+  schedule: "*/59 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          volumes:
+            - name: jub-datamodels-pv-storage
+              persistentVolumeClaim:
+                claimName: datamodels-pv-claim
+          containers:
+            - name: con-parallel-incemental-data-forecast-ingredient-indent
+              image: 10.5.6.34:83/jubdatamodels:13.7
+              imagePullPolicy: IfNotPresent
+              resources:
+                limits:
+                  cpu: "6"
+                requests:
+                  cpu: "0.8"
+              args:
+              - -cpus
+              - "6"
+              volumeMounts:
+                - mountPath: /app/data
+                  name: jub-datamodels-pv-storage
+              command:
+                - /bin/sh
+                - -c
+                #- "python ingredient_indent_processing.py"
+                - "python ingredient_indent_paralllel_processing.py"
+          restartPolicy: OnFailure
+          imagePullSecrets:
+            - name: regcred
+      parallelism: 3 # pod parallelism      
+  concurrencyPolicy: Allow

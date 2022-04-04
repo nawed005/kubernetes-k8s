@@ -6,5 +6,5 @@ metadata:
     app: pgadmin
 data:
   PGADMIN_DEFAULT_EMAIL: "admin@jub.com"
-  PGADMIN_DEFAULT_PASSWORD: "admin"
+  PGADMIN_DEFAULT_PASSWORD: "Jubl@123!@#"
   PGADMIN_PORT: "80"

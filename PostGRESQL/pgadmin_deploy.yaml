@@ -23,7 +23,8 @@ spec:
               name: pgadminstorage 
       containers:
         - name: pgadmin4
-          image: dpage/pgadmin4:5.1
+          image: dpage/pgadmin4:5.5
+          # image: dpage/pgadmin4:5.1
           imagePullPolicy: "IfNotPresent"
           ports:
             - containerPort: 80
